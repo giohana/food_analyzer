@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "31424277853",
+    "project_id": "contador-calorias-b7dc8",
+    "storage_bucket": "contador-calorias-b7dc8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31424277853:android:6f6c0eed4cc9d66b4a8cb4",
+        "android_client_info": {
+          "package_name": "com.example.contador_calorias"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4XZgRn9Gt7InrGIJedmc4ch6ypHvcpb8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31424277853:android:50b50bb0bcde355a4a8cb4",
+        "android_client_info": {
+          "package_name": "com.example.food_analyzer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4XZgRn9Gt7InrGIJedmc4ch6ypHvcpb8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31424277853:android:56b5da0f92a81d954a8cb4",
+        "android_client_info": {
+          "package_name": "com.example.food_recognizer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4XZgRn9Gt7InrGIJedmc4ch6ypHvcpb8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

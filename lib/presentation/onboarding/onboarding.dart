@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_analyzer/presentation/registration/view/registration.dart';
+import 'package:food_analyzer/presentation/login/login_view.dart';
+import 'package:food_analyzer/presentation/registration/registration_view.dart';
 import 'package:food_analyzer/presentation/widgets/button_full_widget.dart';
 
 class Onboarding extends StatelessWidget {
@@ -53,7 +54,11 @@ class Onboarding extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  // Navegar para a próxima tela (ex: tela de login ou cadastro)
+                  Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (context) => const LoginView(),
+                    ),
+                  );
                 },
                 child: const Text(
                   'Já Tenho Conta',

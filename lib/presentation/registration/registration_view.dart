@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:food_analyzer/presentation/home/home_view.dart';
 import 'package:food_analyzer/presentation/widgets/input_form_widget.dart';
 
-import '../view_model/registration_view_model.dart';
+import '../widgets/button_full_widget.dart';
+import 'registration_view_model.dart';
 
 class Registration extends StatefulWidget {
   const Registration({super.key});
@@ -92,6 +94,8 @@ class _RegistrationState extends State<Registration> {
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor, insira sua senha';
+                          } else if (value.length < 6) {
+                            return 'A senha deve ter pelo menos 6 caracteres';
                           }
                           return null;
                         },
@@ -126,13 +130,48 @@ class _RegistrationState extends State<Registration> {
 
                       const SizedBox(height: 24),
 
-                      ElevatedButton(
-                        onPressed: () {
+                      ButtonFull(
+                        onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            // Processar dados do formulário
+                            await _viewModel.registerUser();
+                            if (_viewModel.errorMessageRegister.isEmpty) {
+                              await _viewModel.loginUser();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    'Usuário registrado com sucesso!',
+                                  ),
+                                ),
+                              );
+                              if (_viewModel.errorMessageName.isNotEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(_viewModel.errorMessageName),
+                                  ),
+                                );
+                              }
+                              if (_viewModel.errorMessageLogin.isEmpty) {
+                                Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute<void>(
+                                    builder: (context) => const HomeView(),
+                                  ),
+                                  (Route<dynamic> route) => false,
+                                );
+                              } else {
+                                Navigator.pop(context);
+                              }
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    _viewModel.errorMessageRegister,
+                                  ),
+                                ),
+                              );
+                            }
                           }
                         },
-                        child: const Text('Registrar'),
+                        label: 'CADASTRAR',
                       ),
                     ],
                   ),
