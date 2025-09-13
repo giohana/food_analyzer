@@ -36,11 +36,11 @@ class Onboarding extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute<void>(
-                      builder: (context) => const Registration(),
+                      builder: (context) => const LoginView(),
                     ),
                   );
                 },
-                label: 'Começar Agora',
+                label: 'Entrar',
               ),
               const SizedBox(height: 16),
               ElevatedButton(
@@ -56,12 +56,12 @@ class Onboarding extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute<void>(
-                      builder: (context) => const LoginView(),
+                      builder: (context) => const Registration(),
                     ),
                   );
                 },
                 child: const Text(
-                  'Já Tenho Conta',
+                  'Cadastrar',
                   style: TextStyle(
                     color: Colors.green,
                     fontSize: 16,

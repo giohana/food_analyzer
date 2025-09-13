@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_analyzer/presentation/home/home_view.dart';
 import 'package:food_analyzer/presentation/onboarding/onboarding.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'presentation/home/bottom_bar_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,7 +43,7 @@ class AuthChecker extends StatelessWidget {
         }
 
         if (snapshot.hasData) {
-          return const HomeView();
+          return const BottomNavigationBarView();
         }
 
         return const Onboarding();

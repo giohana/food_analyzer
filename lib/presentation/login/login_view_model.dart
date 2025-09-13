@@ -5,6 +5,7 @@ import '../../configuration/auth_service.dart';
 
 class LoginViewModel {
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController emailControllerReset = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   final FocusNode emailFocusNode = FocusNode();
@@ -18,7 +19,7 @@ class LoginViewModel {
         email: emailController.text,
         password: passwordController.text,
       );
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (_) {
       errorMessageLogin = 'Erro ao fazer login, tente novamente mais tarde.';
     }
   }

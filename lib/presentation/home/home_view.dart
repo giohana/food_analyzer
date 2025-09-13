@@ -11,53 +11,33 @@ class HomeView extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              Text(
-                'Home',
-                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Home',
+                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                ),
               ),
               SizedBox(height: 24),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Column(
-                      children: [
-                        Icon(Icons.camera_alt, size: 100, color: Colors.white),
-                        Text(
-                          'Tirar uma foto do alimento',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Column(
-                      children: [
-                        Icon(Icons.camera_alt, size: 100, color: Colors.white),
-                        Text(
-                          'Tirar uma foto do alimento',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  Expanded(child: _cardAnalyze(Icons.camera_alt, 'Tirar foto')),
+                  Expanded(child: _cardAnalyze(Icons.add_photo_alternate, 'Escolher da galeria')),
                 ],
               ),
+              SizedBox(height: 16),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Ultimas Analises',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Text('Voce ainda não realizou nenhuma análise.'),
             ],
           ),
         ),
@@ -67,25 +47,24 @@ class HomeView extends StatelessWidget {
 
   Widget _cardAnalyze(IconData icon, String label) {
     return Container(
-      width: 150,
       height: 200,
       margin: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        color: Colors.grey[300],
+        color: Colors.green[100],
         borderRadius: BorderRadius.circular(16.0),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 80, color: Colors.grey[700]),
+          Icon(icon, size: 80, color: Colors.green[700]),
           const SizedBox(height: 16.0),
           Text(
             label,
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Colors.grey[700],
+              color: Colors.green[700],
             ),
           ),
         ],

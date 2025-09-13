@@ -6,8 +6,7 @@ class RegistrationViewModel {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
 
   final FocusNode nameFocusNode = FocusNode();
   final FocusNode emailFocusNode = FocusNode();
@@ -29,7 +28,8 @@ class RegistrationViewModel {
         email: emailController.text,
         password: passwordController.text,
       );
-    } on FirebaseAuthException catch (e) {
+      await updateDisplayName();
+    } on FirebaseAuthException catch (_) {
       errorMessageRegister = 'Erro ao registrar usuário, tente novamente mais tarde.';
     }
   }
@@ -37,7 +37,7 @@ class RegistrationViewModel {
   Future<void> updateDisplayName() async {
     try {
       await authService.value.updateDisplayName(nameController.text);
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (_) {
       errorMessageName = 'Cadastro realizado, mas falha ao salvar nome.';
     }
   }
@@ -48,7 +48,7 @@ class RegistrationViewModel {
         email: emailController.text,
         password: passwordController.text,
       );
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (_) {
       errorMessageLogin = 'Erro ao fazer login, tente novamente mais tarde.';
     }
   }

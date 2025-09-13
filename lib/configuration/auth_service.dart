@@ -38,19 +38,9 @@ class AuthService {
     await _firebaseAuth.sendPasswordResetEmail(email: email);
   }
 
-  Future<void> deleteAccount({
-    required String email,
-    required String password,
-}) async {
-    AuthCredential credential = EmailAuthProvider.credential(
-      email: email,
-      password: password,
-    );
-    if (currentUser != null) {
-      await currentUser!.reauthenticateWithCredential(credential);
-      await currentUser!.delete();
-      await _firebaseAuth.signOut();
-    }
+  Future<void> deleteAccount() async {
+    await currentUser!.delete();
+    await _firebaseAuth.signOut();
   }
 
   Future<void> updateDisplayName(String displayName) async {
@@ -58,5 +48,9 @@ class AuthService {
       await currentUser!.updateDisplayName(displayName);
       await currentUser!.reload();
     }
+  }
+
+  User? getUser() {
+    return _firebaseAuth.currentUser;
   }
 }
