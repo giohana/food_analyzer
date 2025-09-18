@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../camera/open_camera.dart';
+
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
@@ -22,8 +24,15 @@ class HomeView extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Expanded(child: _cardAnalyze(Icons.camera_alt, 'Tirar foto')),
-                  Expanded(child: _cardAnalyze(Icons.add_photo_alternate, 'Escolher da galeria')),
+                  Expanded(
+                      child: _cardAnalyze(Icons.camera_alt, 'Tirar foto', () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (context) => const OpenCamera(),
+                      ),
+                    );
+                  })),
+                  Expanded(child: _cardAnalyze(Icons.add_photo_alternate, 'Escolher da galeria', () {})),
                 ],
               ),
               SizedBox(height: 16),
@@ -45,29 +54,32 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  Widget _cardAnalyze(IconData icon, String label) {
-    return Container(
-      height: 200,
-      margin: const EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-        color: Colors.green[100],
-        borderRadius: BorderRadius.circular(16.0),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, size: 80, color: Colors.green[700]),
-          const SizedBox(height: 16.0),
-          Text(
-            label,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.green[700],
+  Widget _cardAnalyze(IconData icon, String label, Function() onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 200,
+        margin: const EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+          color: Colors.green[100],
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 80, color: Colors.green[700]),
+            const SizedBox(height: 16.0),
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.green[700],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

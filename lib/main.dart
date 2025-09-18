@@ -51,3 +51,4 @@ class AuthChecker extends StatelessWidget {
     );
   }
 }
+
