@@ -7,7 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:food_analyzer/presentation/camera/camera_component.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+import '../widgets/button_full_widget.dart';
 
 class OpenCamera extends StatefulWidget {
   const OpenCamera({super.key});
@@ -44,7 +48,7 @@ class _OpenCameraState extends State<OpenCamera> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _buildComponent(),
+      body: SafeArea(child: _buildComponent()),
     );
   }
 
@@ -136,6 +140,10 @@ class _OpenCameraState extends State<OpenCamera> with WidgetsBindingObserver {
       }
       var imageBase64 = toBase64(imageFileCompressed.path);
       Navigator.pop(context);
+      _setEdition(
+        await imageFileCompressed.readAsBytes(),
+        imageFileCompressed.path,
+      );
       unawaited(Navigator.of(context).push(
         MaterialPageRoute<void>(
           builder: (context) => ConfirmImagePage(
@@ -150,6 +158,72 @@ class _OpenCameraState extends State<OpenCamera> with WidgetsBindingObserver {
     } on Exception catch (_) {
       throw Exception('Erro ao tirar foto.');
     }
+  }
+
+  Future<File> _createFileFromBytes(Uint8List bytes) async {
+    final tempDir = await getTemporaryDirectory();
+    final imagePath = '${tempDir.path}/image.jpg';
+    final file = await File(imagePath).writeAsBytes(bytes);
+    return file;
+  }
+
+  Future<void> _setEdition(Uint8List? bytes, String? filePath) async {
+    try {
+      late File file;
+      file = await _createFileFromBytes(bytes!);
+
+      final croppedFile = await ImageCropper().cropImage(
+        sourcePath: file.path,
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarTitle: 'Editar imagem',
+            toolbarColor: Colors.green,
+            toolbarWidgetColor: Colors.white,
+            showCropGrid: true,
+            lockAspectRatio: false,
+            initAspectRatio: CropAspectRatioPreset.square,
+            activeControlsWidgetColor: Colors.green,
+          ),
+          IOSUiSettings(
+            title: 'Editar imagem',
+            doneButtonTitle: 'Concluir',
+            cancelButtonTitle: 'Cancelar',
+            rotateClockwiseButtonHidden: true,
+            showCancelConfirmationDialog: true,
+            showActivitySheetOnDone: false,
+            hidesNavigationBar: true,
+          ),
+        ],
+      );
+      final croppedBytes = await croppedFile?.readAsBytes();
+      if (croppedBytes == null) {
+        _dialogError(context);
+        return;
+      }
+    } catch (e) {
+      _dialogError(context);
+    }
+  }
+
+  Future<void> _dialogError(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Erro inesperado'),
+          content: const Text('Ocorreu um erro insperado, por favor tente novamente mais tarde',
+              style: TextStyle(fontWeight: FontWeight.bold)),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   static Future<File?> compressImage(String path) async {
@@ -200,65 +274,6 @@ class _OpenCameraState extends State<OpenCamera> with WidgetsBindingObserver {
       },
     );
   }
-
-// late CameraController controller;
-// bool _loading = true;
-//
-// @override
-// void initState() {
-//   setState(() {
-//     _loading = true;
-//   });
-//   Future.delayed(Duration.zero, () {
-//     initialize();
-//   });
-//
-//   super.initState();
-// }
-//
-// Future<void> initialize() async {
-//   final cameras = await availableCameras();
-//   controller = CameraController(cameras.first, ResolutionPreset.max);
-//   controller.initialize().then((_) {
-//     if (!mounted) {
-//       return;
-//     }
-//     setState(() {});
-//   }).catchError((Object e) {
-//     if (e is CameraException) {
-//       switch (e.code) {
-//         case 'CameraAccessDenied':
-//           // Handle access errors here.
-//           break;
-//         default:
-//           // Handle other errors here.
-//           break;
-//       }
-//     }
-//   });
-//   setState(() {
-//     _loading = false;
-//   });
-// }
-//
-// @override
-// void dispose() {
-//   controller.dispose();
-//   super.dispose();
-// }
-//
-// @override
-// Widget build(BuildContext context) {
-//   if (_loading) {
-//     return Container(
-//       color: Colors.white,
-//       child: const Center(
-//         child: CircularProgressIndicator(color: Colors.green),
-//       ),
-//     );
-//   }
-//   return CameraPreview(controller);
-// }
 }
 
 class ConfirmImagePage extends StatefulWidget {
@@ -301,7 +316,6 @@ class _ConfirmImagePageState extends State<ConfirmImagePage> {
                 SizedBox(
                   height: 40,
                 ),
-
                 SizedBox(height: 32),
                 Center(
                   child: Container(
@@ -323,13 +337,22 @@ class _ConfirmImagePageState extends State<ConfirmImagePage> {
                 SizedBox(
                   height: 32,
                 ),
-                // Divider(
-                //   height: 0,
-                //   color: colorScheme.neutral.grey.grey400,
-                // ),
-                // SizedBox(
-                //   height: AncarSize.size24,
-                // ),
+                Divider(
+                  height: 0,
+                  color: Colors.grey,
+                ),
+                SizedBox(
+                  height: 24,
+                ),
+                ButtonFull(
+                    label: 'Confirmar Foto',
+                    onPressed: () async {
+                      if (widget.preConfirmImageFunction != null) {
+                        await widget.preConfirmImageFunction!();
+                      }
+                      Navigator.pop(context);
+                      Navigator.pop(context, widget.appImageResult);
+                    }),
                 // AncarxLargeButton.primary(
                 //   key: Key('Enviar foto'),
                 //   label: confirmImagePageModel.firstButton,
